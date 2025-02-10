@@ -1,0 +1,132 @@
+cabal-version: 3.0
+name: diyde
+version: 0.1
+build-type: Simple
+tested-with: GHC==9.6.6
+
+common defaults
+  default-language: GHC2021
+  ghc-options: -Wall -Wderiving-typeable -Wunused-packages -Werror
+  default-extensions:
+    BlockArguments
+    DefaultSignatures
+    DeriveAnyClass
+    DerivingStrategies
+    DerivingVia
+    DuplicateRecordFields
+    NoFieldSelectors
+    OverloadedRecordDot
+    OverloadedStrings
+    OverloadedLabels
+    LambdaCase
+    -- This is annoying with fourmolu
+    NoImportQualifiedPost
+  build-depends:
+    base
+
+library diyde-anno
+  import: defaults
+  hs-source-dirs: src
+  visibility: public
+  build-depends:
+    containers,
+    deepseq,
+    extra,
+    generics-sop,
+    megaparsec,
+    mtl,
+    optics,
+    optics-core,
+    prettyprinter,
+    text >= 2 && < 2.1.2,
+    tree-diff,
+
+  exposed-modules:
+    Base
+    Base.Map
+    Base.Set
+    Base.Pretty
+    Base.Text
+    Diyde.Annotation
+    Diyde.Parser.Annotation
+    Diyde.SrcSpan
+    Diyde.ParserCombinators
+
+library diyde-lsp
+  import: defaults
+  hs-source-dirs: lsp
+  visibility: public
+  build-depends:
+    Diff,
+    Glob,
+    aeson,
+    async ^>=2.2.5,
+    binary,
+    bytestring ^>=0.11.5.3,
+    co-log-core,
+    containers,
+    data-default ^>=0.8.0.0,
+    deepseq,
+    directory,
+    diyde:diyde-anno,
+    enummapset ^>=0.7.3.0,
+    extra,
+    filepath,
+    focus ^>=1.0.3.2,
+    generics-sop,
+    hashable >=1.4.0.0,
+    hls-graph ^>=2.9.0.0,
+    lens,
+    lens-aeson ^>=1.2.3,
+    list-t,
+    lsp ^>=2.7.0.0,
+    lsp-types ^>=2.3.0.0,
+    mtl,
+    prettyprinter,
+    prettyprinter-ansi-terminal ^>=1.1.3,
+    safe-exceptions,
+    sorted-list ^>=0.2.2.0,
+    stm,
+    stm-containers ^>=1.2.1,
+    -- NOTE: the reason why we have an upperbound on text is that
+    -- it introduces new definitions that conflicts with ours
+    text >= 2 && < 2.1.2,
+    text-rope >= 0.3,
+    time,
+    transformers,
+    unliftio,
+    unordered-containers ^>=0.2.20,
+    vector,
+
+  if os(windows)
+    build-depends: Win32
+  else
+    build-depends: unix
+
+  exposed-modules:
+    Control.Concurrent.Strict
+    LSP.Logger
+    LSP.Diyde.LanguageServer
+    LSP.Diyde.Rules
+    LSP.Diyde.SemanticTokens
+    LSP.Diyde.Server
+    LSP.Diyde.Spans
+
+    LSP.Core.Action
+    LSP.Core.Debouncer
+    LSP.Core.FileExists
+    LSP.Core.FileStore
+    LSP.Core.FileUtils
+    LSP.Core.PositionMapping
+    LSP.Core.IdeConfiguration
+    LSP.Core.OfInterest
+    LSP.Core.ProgressReporting
+    LSP.Core.RuleTypes
+    LSP.Core.Shake
+    LSP.Core.Service
+    LSP.Core.WorkerThread
+    LSP.Core.Types.Diagnostics
+    LSP.Core.Types.Location
+    LSP.Core.Types.Monitoring
+    LSP.Core.Types.Options
+    LSP.Core.Types.Shake

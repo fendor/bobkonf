@@ -1,0 +1,37 @@
+ <postal-address> ::= <name-part> <street-address> <zip-part> ;
+
+      <name-part> ::= <personal-part> <last-name> <opt-suffix-part> <EOL> | <personal-part> <name-part> ;
+
+  <personal-part> ::= <first-name> | <initial> "." ;
+
+ <street-address> ::= <house-num> <street-name> <opt-apt-num> <EOL> ;
+
+       <zip-part> ::= <town-name> "," <state-code> <ZIP-code> <EOL> ;
+
+<opt-suffix-part> ::= "Sr." | "Jr." | <roman-numerals> | "" ;
+    <opt-apt-num> ::= "Apt" <apt-num> | "" ;
+
+<apt-num> ::= <nums1>;
+<first-name> ::= <name>;
+<last-name> ::= <name> ;
+<initial> ::= <name> ;
+<house-num> ::= <nums1> ;
+<street-name> ::= <name> ;
+<state-code> ::= <nums1> ;
+<ZIP-code> ::= <nums1> ;
+
+
+<num> ::= '0' .. '9';
+<num1> ::= '1' .. '9';
+<nums1> ::= <num1> | <num1> <nums> ;
+<nums> ::= <num> | <num> <nums> ;
+
+<town-name> ::= <chars> <town-name> | <chars> ;
+<chars> ::= 'a' .. 'z' | 'A' .. 'Z' ;
+
+<roman-numerals> ::= <roman-numeral> <roman-numerals> | <roman-numeral> ;
+<roman-numeral> ::= 'I' | 'II' | 'III' | 'IV' | 'V' ;
+<EOL> ::= ;
+
+<name> ::= <chars> <name> | <chars>;
+
